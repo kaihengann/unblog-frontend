@@ -1,18 +1,53 @@
 import React from "react";
-import { Editor, EditorState, RichUtils } from "draft-js";
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  convertToRaw,
+  convertFromRaw
+} from "draft-js";
+import axios from "axios";
 
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      editorState: EditorState.createEmpty()
-    };
+    this.state = {};
+    const content = window.localStorage.getItem("content");
+    if (content) {
+      this.state.editorState = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(content))
+      );
+    } else {
+      this.state.editorState = EditorState.createEmpty();
+    }
   }
-  
+
   onChange = editorState => {
+    const contentState = editorState.getCurrentContent();
+    this.saveContent(contentState);
     this.setState({
       editorState
     });
+  };
+
+  findAllUserBlogs = async () => {
+    const response = await axios.get("http://localhost:3000/userBlogs");
+    return response.data;
+  };
+
+  saveContent = content => {
+    window.sessionStorage.setItem(
+      "content",
+      JSON.stringify(convertToRaw(content))
+    );
+  };
+
+  onSubmit = async () => {
+    const data = window.sessionStorage.getItem("content");
+    if (data) {
+      const allBlogs = await this.findAllUserBlogs();
+      console.log(allBlogs);
+    }
   };
 
   handleKeyCommand = command => {
@@ -58,8 +93,9 @@ class TextEditor extends React.Component {
             editorState={this.state.editorState}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
-            />
+          />
         </div>
+        <button onClick={this.onSubmit}>Submit</button>
       </div>
     );
   }
