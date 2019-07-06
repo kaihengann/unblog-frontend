@@ -8,8 +8,8 @@ import Login from "../Login/Login";
 import NavBar from "../NavBar/NavBar";
 import TextEditor from "../TextEditor/TextEditor";
 
-const devURL = "http://localhost:3000/userBlogs";
-// const prodURL = "https://unblog-kai.herokuapp.com/userBlogs";
+const host = "https://unblog-kai.herokuapp.com/userBlogs";
+// "https://unblog-kai.herokuapp.com/userBlogs";
 
 class App extends React.Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class App extends React.Component {
     if (jwt) {
       headers.Authorization = "Bearer " + jwt;
     }
-    const url = devURL + "/secure/" + this.state.currentUser;
+    const url = host + "/secure/" + this.state.currentUser;
     const response = await axios.get(url, headers);
     if (!response.ok) {
       return false;
@@ -57,7 +57,7 @@ class App extends React.Component {
         username: this.state.inputFormUsername,
         password: this.state.inputFormPassword
       };
-      const response = await axios.post(devURL + "/login", requestBody);
+      const response = await axios.post(host + "/login", requestBody);
       if (response.data.jwt) {
         sessionStorage.setItem("jwt", response.data.jwt);
         this.setState({
@@ -76,7 +76,7 @@ class App extends React.Component {
   };
 
   render() {
-    const isSignedIn = sessionStorage.getItem('jwt');
+    const isSignedIn = sessionStorage.getItem("jwt");
 
     return (
       <div className="App">
