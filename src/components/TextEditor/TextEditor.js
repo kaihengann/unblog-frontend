@@ -4,9 +4,18 @@ import {
   EditorState,
   RichUtils,
   convertToRaw,
-  convertFromRaw
+  convertFromRaw,
+  ContentState
 } from "draft-js";
 import axios from "axios";
+import Toolbar from "../ToolBar/ToolBar";
+import WordCounter from "../WordCounter/WordCounter"
+
+const getBlockStyle = (block) => {
+  if (block.getType() === "blockquote") return "RichEditor-blockquote"
+  return null;
+  }
+
 
 class TextEditor extends React.Component {
   constructor(props) {
@@ -23,17 +32,31 @@ class TextEditor extends React.Component {
   }
 
   onChange = editorState => {
-    const contentState = editorState.getCurrentContent();
-    this.saveContent(contentState);
-    this.setState({
-      editorState
-    });
+    // const contentState = editorState.getCurrentContent();
+    // this.saveContent(contentState);
+
+    // Force first line to be header
+    const currentContent = editorState.getCurrentContent();
+    const firstBlockKey = currentContent
+      .getBlockMap()
+      .first()
+      .getKey();
+    const currentBlockKey = editorState.getSelection().getAnchorKey();
+    const isFirstBlock = currentBlockKey === firstBlockKey;
+    const currentBlockType = RichUtils.getCurrentBlockType(editorState);
+    const isHeading = currentBlockType === "header-one";
+    if (isFirstBlock !== isHeading) {
+      const newState = RichUtils.toggleBlockType(editorState, "header-one");
+      this.setState({
+        editorState: newState
+      });
+    } else {
+      this.setState({
+        editorState
+      });
+    }
   };
 
-  findAllUserBlogs = async () => {
-    const response = await axios.get("http://localhost:3000/userBlogs");
-    return response.data;
-  };
 
   saveContent = content => {
     window.localStorage.setItem(
@@ -44,9 +67,19 @@ class TextEditor extends React.Component {
 
   onSubmit = async () => {
     const data = window.localStorage.getItem("content");
+    const contentState = this.state.editorState.getCurrentContent()
     if (data) {
-      const allBlogs = await this.findAllUserBlogs();
-      console.log(allBlogs);
+      const title = contentState.getFirstBlock().getText()
+      console.log(title);
+      let body = contentState.getBlocksAsArray()
+      body.shift()
+      const newContentState = ContentState.createFromBlockArray(body)
+      const rawBody = JSON.stringify(convertToRaw(newContentState))
+      const processedBody = convertFromRaw(JSON.parse(rawBody))
+      this.setState({
+        editorState: EditorState.createWithContent(processedBody)
+      })
+      
     }
   };
 
@@ -62,6 +95,9 @@ class TextEditor extends React.Component {
     return "not-handled";
   };
 
+  toggleBlockType = blockType => {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
+  };
   onUnderlineClick = () => {
     this.onChange(
       RichUtils.toggleInlineStyle(this.state.editorState, "UNDERLINE")
@@ -81,6 +117,9 @@ class TextEditor extends React.Component {
   render() {
     return (
       <div className="editorContainer">
+        <div>
+          <WordCounter editorState={this.state.editorState} />
+        </div>
         <button onClick={this.onBoldClick}>
           <b>B</b>
         </button>
@@ -88,8 +127,13 @@ class TextEditor extends React.Component {
           <em>I</em>
         </button>
         <button onClick={this.onUnderlineClick}>U</button>
+        <Toolbar
+          editorState={this.state.editorState}
+          onToggle={this.toggleBlockType}
+          />
         <div className="editors">
           <Editor
+            blockStyleFn={getBlockStyle}
             editorState={this.state.editorState}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
