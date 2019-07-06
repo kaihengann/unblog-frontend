@@ -5,7 +5,9 @@ const NavBar = ({ onLogout, onHome }) => {
   return (
     <nav>
       <button>
-        <Link to="/" onClick={() => onHome()}>Home</Link>
+        <Link to="/" onClick={() => onHome()}>
+          Home
+        </Link>
       </button>
       <button>
         <Link to="/newPost">New Post</Link>
