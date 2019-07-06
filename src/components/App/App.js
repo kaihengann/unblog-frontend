@@ -8,8 +8,9 @@ import Login from "../Login/Login";
 import NavBar from "../NavBar/NavBar";
 import TextEditor from "../TextEditor/TextEditor";
 
-const host = "http://localhost:3000/userBlogs";
+const host = "https://unblog-kai.herokuapp.com/userBlogs";
 // "https://unblog-kai.herokuapp.com/userBlogs";
+// "http://localhost:3000/userBlogs"
 
 class App extends React.Component {
   constructor(props) {
@@ -59,9 +60,6 @@ class App extends React.Component {
       };
       
       const response = await axios.post(host + "/login", requestBody);
-      console.log(response.data);
-      console.log(response.status);
-      console.log(response.data.jwt);
       
       if (response.data.jwt) {
         sessionStorage.setItem("jwt", response.data.jwt);
@@ -75,6 +73,7 @@ class App extends React.Component {
 
   onLogout = () => {
     sessionStorage.removeItem("jwt");
+    localStorage.removeItem("content");
     this.setState({
       isSignedIn: false
     });
