@@ -1,0 +1,20 @@
+.editorContainer {
+  padding: 1em;
+  margin: auto;
+  width:50%
+}
+
+.editors {
+  border: 1px rgb(226, 226, 226) dotted;
+  padding: 1em;
+  margin: 0px;
+  font-family: 'Muli';
+  font-size: 18px;
+  letter-spacing: 0.8px;
+  line-height: 2rem;
+  min-height: 800px;
+}
+
+.actionButton {
+  float:right;
+}

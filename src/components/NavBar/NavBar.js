@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./NavBar.css"
 
 const NavBar = ({ onLogout, onHome }) => {
   return (
-    <nav>
+    <nav className="navBar">
       <button>
         <Link to="/" onClick={() => onHome()}>
           Home
@@ -12,7 +13,7 @@ const NavBar = ({ onLogout, onHome }) => {
       <button>
         <Link to="/newPost">New Post</Link>
       </button>
-      <button>
+      <button id="logoutButton">
         <Link to="/login" onClick={() => onLogout()}>
           Logout
         </Link>

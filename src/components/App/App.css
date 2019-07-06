@@ -1,18 +1,9 @@
-.editorContainer {
-  padding: 1em;
-  margin: 1em;
-}
-
-.editors {
-  border: 1px rgb(226, 226, 226) dotted;
-  padding: 1em;
-  margin: 1em;
-  font-family: 'Muli';
-  font-size: 90%;
-  letter-spacing: 0.8px;
-}
-
 button {
   text-decoration: none;
   border: 1px rgb(226, 226, 226) solid;
+}
+
+h1 {
+  font-family: Playfair Display;
+  font-size: 38px;
 }

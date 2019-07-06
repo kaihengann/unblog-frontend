@@ -9,13 +9,13 @@ import {
 } from "draft-js";
 import axios from "axios";
 import Toolbar from "../ToolBar/ToolBar";
-import WordCounter from "../WordCounter/WordCounter"
+import WordCounter from "../WordCounter/WordCounter";
+import "./TextEditor.css";
 
-const getBlockStyle = (block) => {
-  if (block.getType() === "blockquote") return "RichEditor-blockquote"
+const getBlockStyle = block => {
+  if (block.getType() === "blockquote") return "RichEditor-blockquote";
   return null;
-  }
-
+};
 
 class TextEditor extends React.Component {
   constructor(props) {
@@ -32,8 +32,8 @@ class TextEditor extends React.Component {
   }
 
   onChange = editorState => {
-    // const contentState = editorState.getCurrentContent();
-    // this.saveContent(contentState);
+    const contentState = editorState.getCurrentContent();
+    this.saveContent(contentState);
 
     // Force first line to be header
     const currentContent = editorState.getCurrentContent();
@@ -57,7 +57,6 @@ class TextEditor extends React.Component {
     }
   };
 
-
   saveContent = content => {
     window.localStorage.setItem(
       "content",
@@ -65,21 +64,21 @@ class TextEditor extends React.Component {
     );
   };
 
-  onSubmit = async () => {
+  onSave = async () => {
     const data = window.localStorage.getItem("content");
-    const contentState = this.state.editorState.getCurrentContent()
+    const contentState = this.state.editorState.getCurrentContent();
+    // Remove
     if (data) {
-      const title = contentState.getFirstBlock().getText()
+      const title = contentState.getFirstBlock().getText();
       console.log(title);
-      let body = contentState.getBlocksAsArray()
-      body.shift()
-      const newContentState = ContentState.createFromBlockArray(body)
-      const rawBody = JSON.stringify(convertToRaw(newContentState))
-      const processedBody = convertFromRaw(JSON.parse(rawBody))
+      let body = contentState.getBlocksAsArray();
+      body.shift();
+      const newContentState = ContentState.createFromBlockArray(body);
+      const rawBody = JSON.stringify(convertToRaw(newContentState));
+      const processedBody = convertFromRaw(JSON.parse(rawBody));
       this.setState({
         editorState: EditorState.createWithContent(processedBody)
-      })
-      
+      });
     }
   };
 
@@ -127,10 +126,12 @@ class TextEditor extends React.Component {
           <em>I</em>
         </button>
         <button onClick={this.onUnderlineClick}>U</button>
-        <Toolbar
-          editorState={this.state.editorState}
-          onToggle={this.toggleBlockType}
+        <span>
+          <Toolbar
+            editorState={this.state.editorState}
+            onToggle={this.toggleBlockType}
           />
+        </span>
         <div className="editors">
           <Editor
             blockStyleFn={getBlockStyle}
@@ -139,7 +140,10 @@ class TextEditor extends React.Component {
             onChange={this.onChange}
           />
         </div>
-        <button onClick={this.onSubmit}>Save</button>
+        <button className="actionButton">Back</button>
+        <button className="actionButton" onClick={this.onSave}>
+          Save
+        </button>
       </div>
     );
   }

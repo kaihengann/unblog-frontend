@@ -1,0 +1,20 @@
+.navBar {
+  border-bottom: 1px solid rgb(218, 218, 218);
+  margin-bottom: 20px;
+}
+nav button {
+  border:none;
+  font-size: 1rem;
+  font-family: Muli
+}
+
+nav a {
+  text-decoration: none;
+  color:black;
+}
+
+#logoutButton {
+  display:flex;
+  float:right;
+}
+
