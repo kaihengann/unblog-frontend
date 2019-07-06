@@ -11,7 +11,6 @@ import TextEditor from "../TextEditor/TextEditor";
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       currentPostId: null,
       currentUser: null,
@@ -87,7 +86,6 @@ class App extends React.Component {
     this.setState({
       allPosts: response.data
     });
-    console.log(response.data);
   };
 
   onLogout = () => {
@@ -108,7 +106,10 @@ class App extends React.Component {
       <div className="App">
         <Router>
           {isSignedIn ? (
-            <NavBar onLogout={this.onLogout} onHome={this.getAllPosts} />
+            <NavBar
+              onLogout={this.onLogout}
+              onHome={this.getAllPosts}
+            />
           ) : (
             <Redirect to="/login" />
           )}
@@ -116,9 +117,7 @@ class App extends React.Component {
           <Route
             exact
             path="/"
-            render={() => (
-              <Home posts={this.state.posts} />
-            )}
+            render={() => <Home posts={this.state.allPosts} />}
           />
           <Route exact path="/newPost" component={TextEditor} />
           <Route
