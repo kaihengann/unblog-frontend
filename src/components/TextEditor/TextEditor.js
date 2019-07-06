@@ -36,14 +36,14 @@ class TextEditor extends React.Component {
   };
 
   saveContent = content => {
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       "content",
       JSON.stringify(convertToRaw(content))
     );
   };
 
   onSubmit = async () => {
-    const data = window.sessionStorage.getItem("content");
+    const data = window.localStorage.getItem("content");
     if (data) {
       const allBlogs = await this.findAllUserBlogs();
       console.log(allBlogs);
@@ -95,7 +95,7 @@ class TextEditor extends React.Component {
             onChange={this.onChange}
           />
         </div>
-        <button onClick={this.onSubmit}>Submit</button>
+        <button onClick={this.onSubmit}>Save</button>
       </div>
     );
   }
