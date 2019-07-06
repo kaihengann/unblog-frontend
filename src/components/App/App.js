@@ -1,4 +1,3 @@
-// import "dotenv/config"
 import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import "./App.css";
@@ -12,26 +11,30 @@ import TextEditor from "../TextEditor/TextEditor";
 class App extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       currentPostId: null,
       currentUser: null,
       inputFormUsername: null,
-      inputFormPassword: null
+      inputFormPassword: null,
+      allPosts: null
     };
   }
 
   isUserAuthorised = async () => {
-    let headers = {};
     const jwt = sessionStorage.getItem("jwt");
-    if (jwt) {
+    const currentUser = sessionStorage.getItem("username");
+    if (jwt && currentUser) {
+      let headers = {};
       headers.Authorization = "Bearer " + jwt;
+      const url = process.env.REACT_APP_URL + "/secure/" + currentUser;
+      const response = await axios.get(url, { headers });
+      if (response.ok) {
+        sessionStorage.setItem("username", response.data.username);
+        return { headers, currentUser };
+      }
     }
-    const url = process.env.REACT_APP_URL + "/secure/" + this.state.currentUser;
-    const response = await axios.get(url, headers);
-    if (!response.ok) {
-      return false;
-    }
-    return true;
+    return false;
   };
 
   onChange = e => {
@@ -49,30 +52,52 @@ class App extends React.Component {
 
   onSubmit = async e => {
     e.preventDefault();
-    
     if (e.target.id === "loginFormSubmitButton") {
       const requestBody = {
         username: this.state.inputFormUsername,
         password: this.state.inputFormPassword
       };
-      
-      const response = await axios.post(process.env.REACT_APP_URL + "/login", requestBody);
-      
+      const response = await axios.post(
+        process.env.REACT_APP_URL + "/login",
+        requestBody
+      );
       if (response.data.jwt) {
         sessionStorage.setItem("jwt", response.data.jwt);
+        sessionStorage.setItem("username", response.data.username);
+        let headers = {};
+        headers.Authorization = "Bearer " + response.data.jwt;
         this.setState({
           isSignedIn: true,
           currentUser: response.data.username
         });
+        await this.getAllPosts();
       }
     }
   };
 
+  getAllPosts = async () => {
+    const jwt = sessionStorage.getItem("jwt");
+    const currentUser = sessionStorage.getItem("username");
+    let headers = {};
+    headers.Authorization = "Bearer " + jwt;
+    const response = await axios.get(
+      process.env.REACT_APP_URL + "/posts/" + currentUser,
+      { headers }
+    );
+    this.setState({
+      allPosts: response.data
+    });
+    console.log(response.data);
+  };
+
   onLogout = () => {
     sessionStorage.removeItem("jwt");
+    sessionStorage.removeItem("username");
     localStorage.removeItem("content");
     this.setState({
-      isSignedIn: false
+      isSignedIn: false,
+      allPosts: null,
+      currentUser: null
     });
   };
 
@@ -83,14 +108,19 @@ class App extends React.Component {
       <div className="App">
         <Router>
           {isSignedIn ? (
-            <NavBar onLogout={this.onLogout} />
+            <NavBar onLogout={this.onLogout} onHome={this.getAllPosts} />
           ) : (
             <Redirect to="/login" />
           )}
 
-          <Route exact path="/" component={Home} />
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <Home posts={this.state.posts} />
+            )}
+          />
           <Route exact path="/newPost" component={TextEditor} />
-          {/* <Route path="/newPost" component={TextEditor} /> */}
           <Route
             path="/login"
             render={props => (

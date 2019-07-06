@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NavBar = ({ onLogout }) => {
+const NavBar = ({ onLogout, onHome }) => {
   return (
     <nav>
       <button>
-        <Link to="/">Home</Link>
+        <Link to="/" onClick={() => onHome()}>Home</Link>
       </button>
       <button>
         <Link to="/newPost">New Post</Link>
