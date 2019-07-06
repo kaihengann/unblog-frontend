@@ -8,7 +8,7 @@ import Login from "../Login/Login";
 import NavBar from "../NavBar/NavBar";
 import TextEditor from "../TextEditor/TextEditor";
 
-const host = "https://unblog-kai.herokuapp.com/userBlogs";
+const host = "http://localhost:3000/userBlogs";
 // "https://unblog-kai.herokuapp.com/userBlogs";
 
 class App extends React.Component {
@@ -57,7 +57,12 @@ class App extends React.Component {
         username: this.state.inputFormUsername,
         password: this.state.inputFormPassword
       };
-      const response = await axios.post("https://unblog-kai.herokuapp.com/userBlogs/login", requestBody);
+      
+      const response = await axios.post(host + "/login", requestBody);
+      console.log(response.data);
+      console.log(response.status);
+      console.log(response.data.jwt);
+      
       if (response.data.jwt) {
         sessionStorage.setItem("jwt", response.data.jwt);
         this.setState({
