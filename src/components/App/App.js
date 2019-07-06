@@ -1,3 +1,4 @@
+// import "dotenv/config"
 import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import "./App.css";
@@ -7,10 +8,6 @@ import Home from "../Home/Home";
 import Login from "../Login/Login";
 import NavBar from "../NavBar/NavBar";
 import TextEditor from "../TextEditor/TextEditor";
-
-const host = "https://unblog-kai.herokuapp.com/userBlogs";
-// "https://unblog-kai.herokuapp.com/userBlogs";
-// "http://localhost:3000/userBlogs"
 
 class App extends React.Component {
   constructor(props) {
@@ -29,7 +26,7 @@ class App extends React.Component {
     if (jwt) {
       headers.Authorization = "Bearer " + jwt;
     }
-    const url = host + "/secure/" + this.state.currentUser;
+    const url = process.env.REACT_APP_URL + "/secure/" + this.state.currentUser;
     const response = await axios.get(url, headers);
     if (!response.ok) {
       return false;
@@ -52,14 +49,14 @@ class App extends React.Component {
 
   onSubmit = async e => {
     e.preventDefault();
-
+    
     if (e.target.id === "loginFormSubmitButton") {
       const requestBody = {
         username: this.state.inputFormUsername,
         password: this.state.inputFormPassword
       };
       
-      const response = await axios.post(host + "/login", requestBody);
+      const response = await axios.post(process.env.REACT_APP_URL + "/login", requestBody);
       
       if (response.data.jwt) {
         sessionStorage.setItem("jwt", response.data.jwt);
