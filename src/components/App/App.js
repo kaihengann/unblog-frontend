@@ -57,7 +57,7 @@ class App extends React.Component {
         username: this.state.inputFormUsername,
         password: this.state.inputFormPassword
       };
-      const response = await axios.post(host + "/login", requestBody);
+      const response = await axios.post("https://unblog-kai.herokuapp.com/userBlogs/login", requestBody);
       if (response.data.jwt) {
         sessionStorage.setItem("jwt", response.data.jwt);
         this.setState({
