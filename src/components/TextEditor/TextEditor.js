@@ -1,12 +1,11 @@
-import 'draft-js/dist/Draft.css'
+import "draft-js/dist/Draft.css";
 import React from "react";
 import {
   Editor,
   EditorState,
   RichUtils,
   convertToRaw,
-  convertFromRaw,
-  ContentState
+  convertFromRaw
 } from "draft-js";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -23,22 +22,20 @@ class TextEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    const content = window.localStorage.getItem("content");
-    if (content) {
+    this.postId = this.props.match.params.postId;
+    if (this.props.allPosts) {
+      const filterPost = post => post.postId === this.postId;
+      const currentPost = this.props.allPosts.find(filterPost);
+      const postBody = currentPost.postBody;
       this.state.editorState = EditorState.createWithContent(
-        convertFromRaw(JSON.parse(content))
+        convertFromRaw(JSON.parse(postBody))
       );
     } else {
       this.state.editorState = EditorState.createEmpty();
     }
   }
-  
-  saveContent = content => {
-    window.localStorage.setItem(
-      "content",
-      JSON.stringify(convertToRaw(content))
-    );
-  };
+
+  saveContent = content => {};
 
   onChange = editorState => {
     const contentState = editorState.getCurrentContent();
@@ -60,26 +57,29 @@ class TextEditor extends React.Component {
     //     editorState: newState
     //   });
     // } else {
-      this.setState({
-        editorState
-      });
+    this.setState({
+      editorState
+    });
     // }
   };
 
   onSave = async () => {
     const contentState = this.state.editorState.getCurrentContent();
     if (contentState.getPlainText()) {
-      const content = JSON.stringify(convertToRaw(contentState))
+      const content = JSON.stringify(convertToRaw(contentState));
       const title = contentState.getFirstBlock().getText();
       const requestBody = {
         postTitle: title,
         postBody: content
-      }
-      const token = "Bearer " + sessionStorage.getItem("jwt")
-      let headers = {}
-      headers.Authorization = token
-      await axios.post(`${process.env.REACT_APP_URL}/posts/${this.props.currentUser}`,
-        requestBody, { headers })
+      };
+      const token = "Bearer " + sessionStorage.getItem("jwt");
+      let headers = {};
+      headers.Authorization = token;
+      await axios.post(
+        `${process.env.REACT_APP_URL}/posts/${this.props.currentUser}`,
+        requestBody,
+        { headers }
+      );
     }
   };
 
@@ -124,7 +124,6 @@ class TextEditor extends React.Component {
         <div>
           <WordCounter editorState={this.state.editorState} />
         </div>
-
         <span>
           <Toolbar
             editorState={this.state.editorState}
@@ -142,14 +141,10 @@ class TextEditor extends React.Component {
           />
         </div>
         <button className="actionButton" onClick={this.onSave}>
-          <Link to="/">
-            Save and exit
-          </Link>
+          <Link to="/">Save and exit</Link>
         </button>
         <button className="actionButton">
-          <Link to="/">
-             Back
-          </Link>
+          <Link to="/">Back</Link>
         </button>
       </div>
     );
