@@ -9,9 +9,9 @@
   padding: 1em;
   margin: 0px;
   font-family: 'Muli';
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: 0.8px;
-  line-height: 2rem;
+  line-height: 1.9rem;
   min-height: 800px;
 }
 
@@ -22,4 +22,8 @@
 a {
   text-decoration: none;
   color: black;
+}
+
+h1 {
+  line-height: 3rem
 }
