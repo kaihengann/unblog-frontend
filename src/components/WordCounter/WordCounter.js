@@ -1,6 +1,6 @@
 import React from "react";
 
-const WordCounter = ({ editorState }) => {
+const WordCounter = ({ editorState, editMode }) => {
   const getWordCount = editorState => {
     const plainText = editorState.getCurrentContent().getPlainText("");
     const regex = /(?:\r\n|\r|\n)/g; // new line, carriage return, line feed
@@ -8,7 +8,7 @@ const WordCounter = ({ editorState }) => {
     const wordArray = cleanString.match(/\S+/g); // matches words according to whitespace
     return wordArray ? wordArray.length : 0;
   };
-  return (<span className="wordCounter">{getWordCount(editorState)} words</span>);
+  return (<span className={editMode ? "wordCounter" : "wordCounter invisible"}>{getWordCount(editorState)} words</span>);
 };
 
 export default WordCounter;

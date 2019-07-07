@@ -1,5 +1,6 @@
 import React from "react";
 import StyleButton from "../StyleButton/StyleButton";
+import "./ToolBar.css"
 
 const BLOCK_TYPES = [
   { label: "H1", style: "header-one" },
@@ -11,19 +12,15 @@ const BLOCK_TYPES = [
   { label: "Code Block", style: "code-block" }
 ];
 
-const ToolBar = ({ editorState, onToggle, onClick }) => {
+const ToolBar = ({ editorState, editMode, onToggle, onClick }) => {
   const selection = editorState.getSelection();
   const blockType = editorState
     .getCurrentContent()
     .getBlockForKey(selection.getStartKey())
     .getType();
 
-  // const inlineType = editorState
-  //   .getCurrentInlineStyle()
-  // console.log(inlineType.getType());
-  
   return (
-    <div className="toolBar">
+    <div className={editMode ? "toolBar": "toolBar invisible"}>
       <button id="boldButton" onMouseDown={onClick}>
         <b>B</b>
       </button>

@@ -21,7 +21,9 @@ const getBlockStyle = block => {
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      editMode: false
+    };
     if (this.props.allPosts) {
       const filterPost = post => post.postId === this.props.match.params.postId;
       const currentPost = this.props.allPosts.find(filterPost);
@@ -34,11 +36,9 @@ class TextEditor extends React.Component {
     }
   }
 
-  saveContent = content => {};
-
   onChange = editorState => {
-    const contentState = editorState.getCurrentContent();
-    this.saveContent(contentState);
+    // const contentState = editorState.getCurrentContent();
+    // this.saveContent(contentState);
 
     // Force first line to be header
     // const currentContent = editorState.getCurrentContent();
@@ -115,13 +115,34 @@ class TextEditor extends React.Component {
         RichUtils.toggleInlineStyle(this.state.editorState, "ITALIC")
       );
     }
+    if (e.target.id === "editButton") {
+      this.setState({
+        editMode: !this.state.editMode
+      });
+    }
   };
 
   render() {
     return (
       <div className="editorContainer">
+        <div className="topButtonsContainer">
+          <Link to="/">
+            <button className="actionButton" id="backButton" >Back</button>
+          </Link>
+
+          <button
+            className={this.state.editMode ? "actionButton toggled" : "actionButton"}
+            id="editButton"
+            onClick={this.onClick}
+          >
+            Edit
+          </button>
+        </div>
         <div>
-          <WordCounter editorState={this.state.editorState} />
+          <WordCounter
+            editorState={this.state.editorState}
+            editMode={this.state.editMode}
+          />
         </div>
         <span>
           <Toolbar
@@ -129,6 +150,7 @@ class TextEditor extends React.Component {
             onToggle={this.toggleBlockType}
             {...this.props}
             onClick={this.onClick}
+            editMode={this.state.editMode}
           />
         </span>
         <div className="editors">
@@ -139,11 +161,13 @@ class TextEditor extends React.Component {
             onChange={this.onChange}
           />
         </div>
-        <button className="actionButton" onClick={this.onSave}>
+        <button
+          className={
+            this.state.editMode ? "actionButton" : "actionButton invisible"
+          }
+          onClick={this.onSave}
+        >
           <Link to="/">Save and exit</Link>
-        </button>
-        <button className="actionButton">
-          <Link to="/">Back</Link>
         </button>
       </div>
     );
