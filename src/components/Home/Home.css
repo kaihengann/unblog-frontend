@@ -16,3 +16,22 @@ h4 {
   margin: 0;
   color: rgb(145, 145, 145)
 }
+
+@media only screen and (min-width: 1500px) {
+  .blogPost{
+    width:40%
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .blogPost{
+    width:60%
+  }
+  h1 {
+    font-size: 30px
+  }
+
+  h4 {
+    font-size: 12px
+  }
+}
