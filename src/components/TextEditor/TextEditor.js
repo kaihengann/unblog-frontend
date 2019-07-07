@@ -27,10 +27,12 @@ class TextEditor extends React.Component {
     if (this.props.allPosts) {
       const filterPost = post => post.postId === this.props.match.params.postId;
       const currentPost = this.props.allPosts.find(filterPost);
-      const postBody = currentPost.postBody;
-      this.state.editorState = EditorState.createWithContent(
-        convertFromRaw(JSON.parse(postBody))
-      );
+      if (currentPost) {
+        const postBody = currentPost.postBody;
+        this.state.editorState = EditorState.createWithContent(
+          convertFromRaw(JSON.parse(postBody))
+        );
+      }
     } else {
       this.state.editorState = EditorState.createEmpty();
     }
@@ -48,7 +50,7 @@ class TextEditor extends React.Component {
       const content = JSON.stringify(convertToRaw(contentState));
       const title = contentState.getFirstBlock().getText();
       const jwt = sessionStorage.getItem("jwt");
-      await createPost(title, content, jwt);
+      await createPost(title, content, jwt, this.props.currentUser);
     }
   };
 

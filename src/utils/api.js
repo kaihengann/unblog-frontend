@@ -44,15 +44,23 @@ export const isUserAuthorised = async () => {
   return false;
 };
 
-export const createPost = async (title, content, jwt) => {
+export const createPost = async (title, content, jwt, username) => {
   const requestBody = {
     postTitle: title,
     postBody: content
   };
   const headers = createHeaders(jwt);
   await axios.post(
-    `${process.env.REACT_APP_URL}/posts/${this.props.currentUser}`,
+    `${process.env.REACT_APP_URL}/posts/${username}`,
     requestBody,
+    headers
+  );
+};
+
+export const deletePost = async (postId, jwt, username) => {
+  const headers = createHeaders(jwt);
+  await axios.delete(
+    `${process.env.REACT_APP_URL}/posts/${username}/${postId}`,
     headers
   );
 };

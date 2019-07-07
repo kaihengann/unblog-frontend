@@ -25,6 +25,7 @@ class App extends React.Component {
     this.setState({ allPosts });
   };
 
+
   onChange = e => {
     if (e.target.id === "usernameInput") {
       this.setState({
@@ -91,7 +92,7 @@ class App extends React.Component {
           <Route
             exact
             path="/"
-            render={() => <Home posts={this.state.allPosts} />}
+            render={() => <Home allPosts={this.state.allPosts} />}
           />
           <Route
             key="newPost"
