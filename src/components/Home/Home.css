@@ -19,20 +19,24 @@ h4 {
 
 .delButtonContainer {
   display:flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-content: center;
   margin: 10px auto auto 0;
   cursor: pointer;
   width:50%
 }
 .delButton {
-  margin: 0 auto;
+  margin: 0;
   cursor: pointer;
+  border-bottom: none;
 }
 
 @media only screen and (min-width: 1500px) {
   .blogPost{
     width:40%
+  }
+  .delButtonContainer {
+    width:70%
   }
 }
 
