@@ -1,9 +1,20 @@
 button {
   text-decoration: none;
   border: 1px rgb(226, 226, 226) solid;
+  font-family: Muli
+}
+
+button:hover {
+  background-color: #4fb298;
+  color:white;
 }
 
 h1 {
   font-family: Playfair Display;
   font-size: 38px;
+}
+
+.invisible {
+  visibility: hidden;
+  border:none
 }

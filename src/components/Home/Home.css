@@ -4,6 +4,7 @@
   width: 50%;
   min-height: 200px;
   padding: 2rem;
+  cursor: pointer;
 }
 
 h1 {

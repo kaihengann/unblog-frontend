@@ -1,22 +1,37 @@
 .editorContainer {
   padding: 1em;
   margin: auto;
-  width:50%
+  width: 50%;
 }
 
 .editors {
   border: 1px rgb(226, 226, 226) dotted;
   padding: 1em;
   margin: 0px;
-  font-family: 'Muli';
+  font-family: "Muli";
   font-size: 17px;
   letter-spacing: 0.8px;
   line-height: 1.9rem;
   min-height: 800px;
 }
 
+.topButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
 .actionButton {
   float:right;
+  width: 90px;
+  cursor: pointer;
+  font-family: Muli;
+  font-size: 0.7rem;
+}
+
+.toggled {
+  background-color:#4fb298;
+  color:white;
 }
 
 a {
@@ -25,5 +40,6 @@ a {
 }
 
 h1 {
-  line-height: 3rem
+  line-height: 3rem;
 }
+

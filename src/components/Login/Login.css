@@ -6,8 +6,9 @@
   align-content: center;
   justify-content: center;
   border: 1px solid whitesmoke;
-  box-shadow: 0px 5px 3px -3px rgba(0, 0, 0, 0.8);
+  box-shadow: 2px 5px 6px -3px rgba(111, 111, 111, 0.8);
 }
+
 .loginForm {
   width: 200px;
   display:flex;
@@ -23,7 +24,7 @@
   border-style: none;
   border: 0;
   outline: none;
-  border-bottom: 1px solid rgba(233, 233, 233, 0.9);
+  border-bottom: 2px solid rgba(233, 233, 233, 0.9);
   text-align: left;
   justify-content: left;
   font-size: 0.8rem;
@@ -33,12 +34,21 @@
   -webkit-appearance: none;
 }
 
+.loginInput:hover {
+  border-bottom:2px solid #4fb298;
+}
+
 button {
   margin: 10px 0px;
   padding: 8px;
-  
 }
+
+
 
 button:focus {
   outline: none;
+}
+
+h1 {
+  margin-bottom: 30px;
 }
