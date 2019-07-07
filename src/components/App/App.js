@@ -11,15 +11,32 @@ import TextEditor from "../TextEditor/TextEditor";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    const currentUser = sessionStorage.getItem('username')
+    const currentUser = sessionStorage.getItem("username");
     this.state = {
-      currentPostId: null,
       currentUser,
       inputFormUsername: null,
       inputFormPassword: null,
       allPosts: null
     };
   }
+
+  componentDidMount = async () => {
+    this.getAllPosts();
+  };
+
+  getAllPosts = async () => {
+    const token = "Bearer " + sessionStorage.getItem("jwt");
+    const currentUser = sessionStorage.getItem("username");
+    let headers = {};
+    headers.Authorization = token;
+    const response = await axios.get(
+      process.env.REACT_APP_URL + "/posts/" + currentUser,
+      { headers }
+    );
+    this.setState({
+      allPosts: response.data
+    });
+  };
 
   isUserAuthorised = async () => {
     const jwt = sessionStorage.getItem("jwt");
@@ -75,20 +92,6 @@ class App extends React.Component {
     }
   };
 
-  getAllPosts = async () => {
-    const token = "Bearer " + sessionStorage.getItem("jwt");
-    const currentUser = sessionStorage.getItem("username");
-    let headers = {}
-    headers.Authorization = token
-    const response = await axios.get(
-      process.env.REACT_APP_URL + "/posts/" + currentUser,
-      { headers }
-    );
-    this.setState({
-      allPosts: response.data
-    });
-  };
-
   onLogout = () => {
     sessionStorage.removeItem("jwt");
     sessionStorage.removeItem("username");
@@ -102,25 +105,39 @@ class App extends React.Component {
 
   render() {
     const isSignedIn = sessionStorage.getItem("jwt");
-
     return (
       <div className="App">
         <Router>
           {isSignedIn ? (
-            <NavBar
-              onLogout={this.onLogout}
-              onHome={this.getAllPosts}
-            />
+            <NavBar onLogout={this.onLogout} onHome={this.getAllPosts} />
           ) : (
             <Redirect to="/login" />
           )}
 
           <Route
+            key="editPost"
+            path="/posts/:postId"
+            render={(props) => (
+              <TextEditor
+                allPosts={this.state.allPosts}
+                {...props}
+              />
+            )}
+          />
+
+          <Route
             exact
             path="/"
-            render={() => <Home posts={this.state.allPosts} />}
+            render={() => (
+              <Home posts={this.state.allPosts} />
+            )}
           />
-          <Route exact path="/newPost" render={() => <TextEditor currentUser={this.state.currentUser} />} />
+          <Route
+            key="newPost"
+            exact
+            path="/newPost"
+            render={() => <TextEditor currentUser={this.state.currentUser} />}
+          />
           <Route
             path="/login"
             render={props => (
