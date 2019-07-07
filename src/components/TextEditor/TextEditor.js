@@ -32,6 +32,13 @@ class TextEditor extends React.Component {
       this.state.editorState = EditorState.createEmpty();
     }
   }
+  
+  saveContent = content => {
+    window.localStorage.setItem(
+      "content",
+      JSON.stringify(convertToRaw(content))
+    );
+  };
 
   onChange = editorState => {
     const contentState = editorState.getCurrentContent();
@@ -59,28 +66,20 @@ class TextEditor extends React.Component {
     // }
   };
 
-  saveContent = content => {
-    window.localStorage.setItem(
-      "content",
-      JSON.stringify(convertToRaw(content))
-    );
-  };
-
   onSave = async () => {
-    const data = window.localStorage.getItem("content");
     const contentState = this.state.editorState.getCurrentContent();
-    // Remove
-    if (data) {
+    if (contentState.getPlainText()) {
+      const content = JSON.stringify(convertToRaw(contentState))
       const title = contentState.getFirstBlock().getText();
-      console.log(title);
-      let body = contentState.getBlocksAsArray();
-      body.shift();
-      const newContentState = ContentState.createFromBlockArray(body);
-      const rawBody = JSON.stringify(convertToRaw(newContentState));
-      const processedBody = convertFromRaw(JSON.parse(rawBody));
-      this.setState({
-        editorState: EditorState.createWithContent(processedBody)
-      });
+      const requestBody = {
+        postTitle: title,
+        postBody: content
+      }
+      const token = "Bearer " + sessionStorage.getItem("jwt")
+      let headers = {}
+      headers.Authorization = token
+      await axios.post(`${process.env.REACT_APP_URL}/posts/${this.props.currentUser}`,
+        requestBody, { headers })
     }
   };
 
