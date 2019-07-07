@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import "./App.css";
-import axios from "axios";
+import { getAllPosts, userLogin } from "../../utils/api";
 
 import Home from "../Home/Home";
 import Login from "../Login/Login";
@@ -21,37 +21,8 @@ class App extends React.Component {
   }
 
   componentDidMount = async () => {
-    this.getAllPosts();
-  };
-
-  getAllPosts = async () => {
-    const token = "Bearer " + sessionStorage.getItem("jwt");
-    const currentUser = sessionStorage.getItem("username");
-    let headers = {};
-    headers.Authorization = token;
-    const response = await axios.get(
-      process.env.REACT_APP_URL + "/posts/" + currentUser,
-      { headers }
-    );
-    this.setState({
-      allPosts: response.data
-    });
-  };
-
-  isUserAuthorised = async () => {
-    const jwt = sessionStorage.getItem("jwt");
-    const currentUser = sessionStorage.getItem("username");
-    if (jwt && currentUser) {
-      let headers = {};
-      headers.Authorization = "Bearer " + jwt;
-      const url = process.env.REACT_APP_URL + "/secure/" + currentUser;
-      const response = await axios.get(url, { headers });
-      if (response.ok) {
-        sessionStorage.setItem("username", response.data.username);
-        return { headers, currentUser };
-      }
-    }
-    return false;
+    const allPosts = await getAllPosts();
+    this.setState({ allPosts });
   };
 
   onChange = e => {
@@ -70,24 +41,21 @@ class App extends React.Component {
   onSubmit = async e => {
     e.preventDefault();
     if (e.target.id === "loginFormSubmitButton") {
-      const requestBody = {
-        username: this.state.inputFormUsername,
-        password: this.state.inputFormPassword
-      };
-      const response = await axios.post(
-        process.env.REACT_APP_URL + "/login",
-        requestBody
+      const data = await userLogin(
+        this.state.inputFormUsername,
+        this.state.inputFormPassword
       );
-      if (response.data.jwt) {
-        sessionStorage.setItem("jwt", response.data.jwt);
-        sessionStorage.setItem("username", response.data.username);
-        let headers = {};
-        headers.Authorization = "Bearer " + response.data.jwt;
+      if (data.jwt) {
+        sessionStorage.setItem("jwt", data.jwt);
+        sessionStorage.setItem("username", data.username);
         this.setState({
           isSignedIn: true,
-          currentUser: response.data.username
+          currentUser: data.username
         });
-        await this.getAllPosts();
+        const allPosts = await getAllPosts();
+        this.setState({
+          allPosts
+        });
       }
     }
   };
@@ -109,28 +77,21 @@ class App extends React.Component {
       <div className="App">
         <Router>
           {isSignedIn ? (
-            <NavBar onLogout={this.onLogout} onHome={this.getAllPosts} />
+            <NavBar onLogout={this.onLogout} onHome={getAllPosts} />
           ) : (
             <Redirect to="/login" />
           )}
-
           <Route
             key="editPost"
             path="/posts/:postId"
-            render={(props) => (
-              <TextEditor
-                allPosts={this.state.allPosts}
-                {...props}
-              />
+            render={props => (
+              <TextEditor allPosts={this.state.allPosts} {...props} />
             )}
           />
-
           <Route
             exact
             path="/"
-            render={() => (
-              <Home posts={this.state.allPosts} />
-            )}
+            render={() => <Home posts={this.state.allPosts} />}
           />
           <Route
             key="newPost"

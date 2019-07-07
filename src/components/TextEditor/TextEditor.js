@@ -1,4 +1,3 @@
-import "draft-js/dist/Draft.css";
 import React from "react";
 import {
   Editor,
@@ -7,11 +6,11 @@ import {
   convertToRaw,
   convertFromRaw
 } from "draft-js";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import Toolbar from "../ToolBar/ToolBar";
 import WordCounter from "../WordCounter/WordCounter";
 import "./TextEditor.css";
+import { createPost } from "../../utils/api";
 
 const getBlockStyle = block => {
   if (block.getType() === "blockquote") return "RichEditor-blockquote";
@@ -21,9 +20,10 @@ const getBlockStyle = block => {
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      editMode: false
-    };
+    this.state = {};
+    this.props.match
+      ? (this.state.editMode = false)
+      : (this.state.editMode = true);
     if (this.props.allPosts) {
       const filterPost = post => post.postId === this.props.match.params.postId;
       const currentPost = this.props.allPosts.find(filterPost);
@@ -37,29 +37,9 @@ class TextEditor extends React.Component {
   }
 
   onChange = editorState => {
-    // const contentState = editorState.getCurrentContent();
-    // this.saveContent(contentState);
-
-    // Force first line to be header
-    // const currentContent = editorState.getCurrentContent();
-    // const firstBlockKey = currentContent
-    //   .getBlockMap()
-    //   .first()
-    //   .getKey();
-    // const currentBlockKey = editorState.getSelection().getAnchorKey();
-    // const isFirstBlock = currentBlockKey === firstBlockKey;
-    // const currentBlockType = RichUtils.getCurrentBlockType(editorState);
-    // const isHeading = currentBlockType === "header-one";
-    // if (isFirstBlock !== isHeading) {
-    //   const newState = RichUtils.toggleBlockType(editorState, "header-one");
-    //   this.setState({
-    //     editorState: newState
-    //   });
-    // } else {
     this.setState({
       editorState
     });
-    // }
   };
 
   onSave = async () => {
@@ -67,18 +47,8 @@ class TextEditor extends React.Component {
     if (contentState.getPlainText()) {
       const content = JSON.stringify(convertToRaw(contentState));
       const title = contentState.getFirstBlock().getText();
-      const requestBody = {
-        postTitle: title,
-        postBody: content
-      };
-      const token = "Bearer " + sessionStorage.getItem("jwt");
-      let headers = {};
-      headers.Authorization = token;
-      await axios.post(
-        `${process.env.REACT_APP_URL}/posts/${this.props.currentUser}`,
-        requestBody,
-        { headers }
-      );
+      const jwt = sessionStorage.getItem("jwt");
+      await createPost(title, content, jwt);
     }
   };
 
@@ -127,11 +97,15 @@ class TextEditor extends React.Component {
       <div className="editorContainer">
         <div className="topButtonsContainer">
           <Link to="/">
-            <button className="actionButton" id="backButton" >Back</button>
+            <button className="actionButton" id="backButton">
+              Back
+            </button>
           </Link>
 
           <button
-            className={this.state.editMode ? "actionButton toggled" : "actionButton"}
+            className={
+              this.state.editMode ? "actionButton toggled" : "actionButton"
+            }
             id="editButton"
             onClick={this.onClick}
           >
