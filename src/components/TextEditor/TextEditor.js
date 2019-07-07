@@ -1,3 +1,4 @@
+import 'draft-js/dist/Draft.css'
 import React from "react";
 import {
   Editor,
@@ -8,6 +9,7 @@ import {
   ContentState
 } from "draft-js";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import Toolbar from "../ToolBar/ToolBar";
 import WordCounter from "../WordCounter/WordCounter";
 import "./TextEditor.css";
@@ -36,25 +38,25 @@ class TextEditor extends React.Component {
     this.saveContent(contentState);
 
     // Force first line to be header
-    const currentContent = editorState.getCurrentContent();
-    const firstBlockKey = currentContent
-      .getBlockMap()
-      .first()
-      .getKey();
-    const currentBlockKey = editorState.getSelection().getAnchorKey();
-    const isFirstBlock = currentBlockKey === firstBlockKey;
-    const currentBlockType = RichUtils.getCurrentBlockType(editorState);
-    const isHeading = currentBlockType === "header-one";
-    if (isFirstBlock !== isHeading) {
-      const newState = RichUtils.toggleBlockType(editorState, "header-one");
-      this.setState({
-        editorState: newState
-      });
-    } else {
+    // const currentContent = editorState.getCurrentContent();
+    // const firstBlockKey = currentContent
+    //   .getBlockMap()
+    //   .first()
+    //   .getKey();
+    // const currentBlockKey = editorState.getSelection().getAnchorKey();
+    // const isFirstBlock = currentBlockKey === firstBlockKey;
+    // const currentBlockType = RichUtils.getCurrentBlockType(editorState);
+    // const isHeading = currentBlockType === "header-one";
+    // if (isFirstBlock !== isHeading) {
+    //   const newState = RichUtils.toggleBlockType(editorState, "header-one");
+    //   this.setState({
+    //     editorState: newState
+    //   });
+    // } else {
       this.setState({
         editorState
       });
-    }
+    // }
   };
 
   saveContent = content => {
@@ -97,20 +99,24 @@ class TextEditor extends React.Component {
   toggleBlockType = blockType => {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
   };
-  onUnderlineClick = () => {
-    this.onChange(
-      RichUtils.toggleInlineStyle(this.state.editorState, "UNDERLINE")
-    );
-  };
 
-  onBoldClick = () => {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, "BOLD"));
-  };
-
-  onItalicClick = () => {
-    this.onChange(
-      RichUtils.toggleInlineStyle(this.state.editorState, "ITALIC")
-    );
+  onClick = e => {
+    e.preventDefault();
+    if (e.target.id === "underlineButton") {
+      this.onChange(
+        RichUtils.toggleInlineStyle(this.state.editorState, "UNDERLINE")
+      );
+    }
+    if (e.target.id === "boldButton") {
+      this.onChange(
+        RichUtils.toggleInlineStyle(this.state.editorState, "BOLD")
+      );
+    }
+    if (e.target.id === "italicButton") {
+      this.onChange(
+        RichUtils.toggleInlineStyle(this.state.editorState, "ITALIC")
+      );
+    }
   };
 
   render() {
@@ -119,17 +125,13 @@ class TextEditor extends React.Component {
         <div>
           <WordCounter editorState={this.state.editorState} />
         </div>
-        <button onClick={this.onBoldClick}>
-          <b>B</b>
-        </button>
-        <button onClick={this.onItalicClick}>
-          <em>I</em>
-        </button>
-        <button onClick={this.onUnderlineClick}>U</button>
+
         <span>
           <Toolbar
             editorState={this.state.editorState}
             onToggle={this.toggleBlockType}
+            {...this.props}
+            onClick={this.onClick}
           />
         </span>
         <div className="editors">
@@ -140,9 +142,15 @@ class TextEditor extends React.Component {
             onChange={this.onChange}
           />
         </div>
-        <button className="actionButton">Back</button>
         <button className="actionButton" onClick={this.onSave}>
-          Save
+          <Link to="/">
+            Save and exit
+          </Link>
+        </button>
+        <button className="actionButton">
+          <Link to="/">
+             Back
+          </Link>
         </button>
       </div>
     );
