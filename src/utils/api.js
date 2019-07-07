@@ -57,6 +57,28 @@ export const createPost = async (title, content, jwt, username) => {
   );
 };
 
+export const updatePost = async (
+  postId,
+  postTitle,
+  postBody,
+  createdOn,
+  jwt,
+  username
+) => {
+  const headers = createHeaders(jwt);
+  const requestBody = {
+    postId,
+    postTitle,
+    postBody,
+    createdOn
+  };
+  await axios.put(
+    `${process.env.REACT_APP_URL}/posts/${username}`,
+    requestBody,
+    headers
+  );
+};
+
 export const deletePost = async (postId, jwt, username) => {
   const headers = createHeaders(jwt);
   await axios.delete(

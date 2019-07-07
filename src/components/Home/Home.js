@@ -37,7 +37,7 @@ class Home extends React.Component {
             <React.Fragment key={postId}>
               <div
                 className="delButtonContainer"
-                onClick={async e => {
+                onClick={async () => {
                   await this.onDelete(postId);
                   await this.onClick();
                 }}
@@ -49,6 +49,7 @@ class Home extends React.Component {
                 id={postId}
                 onClick={() => {
                   this.props.history.push(`/posts/${postId}`);
+                  localStorage.setItem("existingPost", true);
                 }}
               >
                 <div>

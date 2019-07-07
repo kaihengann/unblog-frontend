@@ -14,9 +14,9 @@ class App extends React.Component {
     const currentUser = sessionStorage.getItem("username");
     this.state = {
       currentUser,
+      allPosts: null,
       inputFormUsername: null,
-      inputFormPassword: null,
-      allPosts: null
+      inputFormPassword: null
     };
   }
 
@@ -24,7 +24,6 @@ class App extends React.Component {
     const allPosts = await getAllPosts();
     this.setState({ allPosts });
   };
-
 
   onChange = e => {
     if (e.target.id === "usernameInput") {
@@ -78,7 +77,11 @@ class App extends React.Component {
       <div className="App">
         <Router>
           {isSignedIn ? (
-            <NavBar onLogout={this.onLogout} onHome={getAllPosts} />
+            <NavBar
+              onLogout={this.onLogout}
+              onHome={getAllPosts}
+              onCreatePost={this.onCreatePost}
+            />
           ) : (
             <Redirect to="/login" />
           )}
@@ -92,7 +95,12 @@ class App extends React.Component {
           <Route
             exact
             path="/"
-            render={() => <Home allPosts={this.state.allPosts} />}
+            render={() => (
+              <Home
+                allPosts={this.state.allPosts}
+                onPostClick={this.onPostClick}
+              />
+            )}
           />
           <Route
             key="newPost"

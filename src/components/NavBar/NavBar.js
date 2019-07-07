@@ -11,7 +11,7 @@ const NavBar = ({ onLogout, onHome }) => {
         </Link>
       </button>
       <button>
-        <Link to="/newPost">New Post</Link>
+        <Link onClick={() => {localStorage.setItem("existingPost", false)}}to="/newPost">New Post</Link>
       </button>
       <button id="logoutButton">
         <Link to="/login" onClick={() => onLogout()}>
