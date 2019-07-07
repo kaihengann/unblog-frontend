@@ -22,9 +22,8 @@ class TextEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.postId = this.props.match.params.postId;
     if (this.props.allPosts) {
-      const filterPost = post => post.postId === this.postId;
+      const filterPost = post => post.postId === this.props.match.params.postId;
       const currentPost = this.props.allPosts.find(filterPost);
       const postBody = currentPost.postBody;
       this.state.editorState = EditorState.createWithContent(
