@@ -11,9 +11,10 @@ import TextEditor from "../TextEditor/TextEditor";
 class App extends React.Component {
   constructor(props) {
     super(props);
+    const currentUser = sessionStorage.getItem('username')
     this.state = {
       currentPostId: null,
-      currentUser: null,
+      currentUser,
       inputFormUsername: null,
       inputFormPassword: null,
       allPosts: null
@@ -75,10 +76,10 @@ class App extends React.Component {
   };
 
   getAllPosts = async () => {
-    const jwt = sessionStorage.getItem("jwt");
+    const token = "Bearer " + sessionStorage.getItem("jwt");
     const currentUser = sessionStorage.getItem("username");
-    let headers = {};
-    headers.Authorization = "Bearer " + jwt;
+    let headers = {}
+    headers.Authorization = token
     const response = await axios.get(
       process.env.REACT_APP_URL + "/posts/" + currentUser,
       { headers }
@@ -119,7 +120,7 @@ class App extends React.Component {
             path="/"
             render={() => <Home posts={this.state.allPosts} />}
           />
-          <Route exact path="/newPost" component={TextEditor} />
+          <Route exact path="/newPost" render={() => <TextEditor currentUser={this.state.currentUser} />} />
           <Route
             path="/login"
             render={props => (
