@@ -1,6 +1,6 @@
 .blogPost {
   border: 1px solid rgb(220, 220, 220);
-  margin: 10px auto;
+  margin: 0 auto;
   width: 50%;
   min-height: 200px;
   padding: 2rem;
@@ -15,6 +15,19 @@ h4 {
   font-family: Muli;
   margin: 0;
   color: rgb(145, 145, 145)
+}
+
+.delButtonContainer {
+  display:flex;
+  justify-content: flex-end;
+  align-content: center;
+  margin: 10px auto auto 0;
+  cursor: pointer;
+  width:50%
+}
+.delButton {
+  margin: 0 auto;
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 1500px) {
