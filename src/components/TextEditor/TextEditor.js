@@ -18,7 +18,6 @@ const TextEditor = ({
   onSave,
   onClick,
   onChange,
-  readOnly,
   handleKeyCommand,
   toggleBlockType
 }) => {
@@ -57,7 +56,7 @@ const TextEditor = ({
           editMode={editMode}
         />
       </span>
-      <div className="editors">
+      <div className="editor">
         <Editor
           blockStyleFn={getBlockStyle}
           editorState={editorState}

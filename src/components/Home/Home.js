@@ -3,7 +3,7 @@ import moment from "moment";
 import { withRouter } from "react-router-dom";
 import "./Home.css";
 
-const Home = ({ history, allPosts, onDelete, onClick }) => {
+const Home = ({ history, allPosts, onDelete, onPostClick }) => {
   if (allPosts) {
     const blogPosts = allPosts.map(
       ({ postId, postTitle, createdOn, updatedOn }) => {
@@ -21,7 +21,7 @@ const Home = ({ history, allPosts, onDelete, onClick }) => {
               id={postId}
               onClick={() => {
                 history.push(`/posts/${postId}`);
-                onClick(postId);
+                onPostClick(postId);
               }}
             >
               <div>

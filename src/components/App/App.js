@@ -56,7 +56,7 @@ class App extends React.Component {
     }
   };
 
-  onClick = async postId => {
+  onPostClick = async postId => {
     const allPosts = await getAllPosts();
     this.setState({ allPosts, editMode: false });
     this.getCurrentPost(postId);
@@ -73,17 +73,15 @@ class App extends React.Component {
       const jwt = sessionStorage.getItem("jwt");
       if (!this.state.currentPost) {
         await createPost(title, content, jwt, username);
-        const allPosts = await getAllPosts();
-        this.setState({ allPosts });
       }
       if (this.state.currentPost) {
         const postId = this.state.currentPost.postId;
         const createdOn = this.state.currentPost.createdOn;
         await updatePost(postId, title, content, createdOn, jwt, username);
-        const allPosts = await getAllPosts();
-        this.setState({ allPosts });
       }
     }
+    const allPosts = await getAllPosts();
+    this.setState({ allPosts });
   };
 
   handleKeyCommand = command => {
@@ -234,7 +232,7 @@ class App extends React.Component {
               <Home
                 allPosts={this.state.allPosts}
                 onDelete={this.onDelete}
-                onClick={this.onClick}
+                onPostClick={this.onPostClick}
                 {...props}
               />
             )}
