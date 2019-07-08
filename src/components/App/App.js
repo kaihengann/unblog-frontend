@@ -37,10 +37,6 @@ class App extends React.Component {
     this.setState({ allPosts });
   };
 
-  // componentDidUpdate = (prevProps, prevState) => {
-
-  // }
-
   getCurrentPost = postId => {
     if (this.state.allPosts) {
       const filterPost = post => post.postId === postId;
