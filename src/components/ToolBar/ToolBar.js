@@ -1,6 +1,6 @@
 import React from "react";
 import StyleButton from "../StyleButton/StyleButton";
-import "./ToolBar.css"
+import "./ToolBar.css";
 
 const BLOCK_TYPES = [
   { label: "H1", style: "header-one" },
@@ -20,14 +20,16 @@ const ToolBar = ({ editorState, editMode, onToggle, onClick }) => {
     .getType();
 
   return (
-    <div className={editMode ? "toolBar": "toolBar invisible"}>
+    <div className={editMode ? "toolBar" : "toolBar invisible"}>
       <button id="boldButton" onMouseDown={onClick}>
         <b>B</b>
       </button>
       <button id="italicButton" onMouseDown={onClick}>
         <em>I</em>
       </button>
-      <button id="underlineButton" onMouseDown={onClick}>U</button>
+      <button id="underlineButton" onMouseDown={onClick}>
+        U
+      </button>
       {BLOCK_TYPES.map(type => (
         <StyleButton
           key={type.label}

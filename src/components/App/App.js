@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import "./App.css";
-import { getAllPosts, userLogin } from "../../utils/api";
+import { getAllPosts, userLogin, deletePost } from "../../utils/api";
 
 import Home from "../Home/Home";
 import Login from "../Login/Login";
@@ -71,6 +71,17 @@ class App extends React.Component {
     });
   };
 
+  onDelete = async postId => {
+    const jwt = sessionStorage.getItem("jwt");
+    const username = sessionStorage.getItem("username");
+    await deletePost(postId, jwt, username);
+  };
+
+  onClick = async () => {
+    const posts = await getAllPosts();
+    this.setState({ allPosts: posts });
+  };
+
   render() {
     const isSignedIn = sessionStorage.getItem("jwt");
     return (
@@ -98,6 +109,9 @@ class App extends React.Component {
             render={() => (
               <Home
                 allPosts={this.state.allPosts}
+                onDelete={this.onDelete}
+                onClick={this.onClick}
+                {...this.props}
               />
             )}
           />
