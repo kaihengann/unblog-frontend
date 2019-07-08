@@ -98,7 +98,6 @@ class App extends React.Component {
             render={() => (
               <Home
                 allPosts={this.state.allPosts}
-                onPostClick={this.onPostClick}
               />
             )}
           />
@@ -115,7 +114,6 @@ class App extends React.Component {
                 onChange={this.onChange}
                 onSubmit={this.onSubmit}
                 isSignedIn={this.state.isSignedIn}
-                {...props}
               />
             )}
           />

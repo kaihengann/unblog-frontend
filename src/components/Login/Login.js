@@ -17,7 +17,7 @@ const Login = ({ onChange, onSubmit, isSignedIn }) => {
               onChange={onChange}
             />
             <input
-              type="text"
+              type="password"
               className="loginInput"
               id="passwordInput"
               placeholder="Password"

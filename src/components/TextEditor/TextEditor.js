@@ -39,6 +39,11 @@ class TextEditor extends React.Component {
           convertFromRaw(JSON.parse(postBody))
         );
       }
+
+      // Temp code for debugging
+      if (!this.state.editorState) this.state.editorState = EditorState.createEmpty();
+      console.log(this.state.editorState);
+      
     } else {
       this.state.editorState = EditorState.createEmpty();
     }
@@ -146,7 +151,6 @@ class TextEditor extends React.Component {
           <Toolbar
             editorState={this.state.editorState}
             onToggle={this.toggleBlockType}
-            {...this.props}
             onClick={this.onClick}
             editMode={this.state.editMode}
           />
