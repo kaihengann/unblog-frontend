@@ -23,12 +23,11 @@ class App extends React.Component {
     this.state = {
       currentUser,
       allPosts: null,
+      editMode: false,
+      currentPost: null,
       inputFormUsername: null,
       inputFormPassword: null,
-      progress: 0,
-      editMode: false,
-      editorState: EditorState.createEmpty(),
-      currentPost: null
+      editorState: EditorState.createEmpty()
     };
   }
 
@@ -48,8 +47,6 @@ class App extends React.Component {
   updateEditorState = () => {
     if (this.state.currentPost) {
       const postBody = this.state.currentPost.postBody;
-      // this.postId = this.state.currentPost.postId;
-      // this.createdOn = this.state.currentPost.createdOn;
       const content = convertFromRaw(JSON.parse(postBody));
       this.setState({
         editorState: EditorState.createWithContent(content)
@@ -60,8 +57,8 @@ class App extends React.Component {
   };
 
   onClick = async postId => {
-    const posts = await getAllPosts();
-    this.setState({ allPosts: posts });
+    const allPosts = await getAllPosts();
+    this.setState({ allPosts });
     this.getCurrentPost(postId);
     this.updateEditorState();
   };
@@ -193,6 +190,8 @@ class App extends React.Component {
     const jwt = sessionStorage.getItem("jwt");
     const username = sessionStorage.getItem("username");
     await deletePost(postId, jwt, username);
+    const allPosts = await getAllPosts();
+    this.setState({ allPosts });
   };
 
   render() {

@@ -12,10 +12,7 @@ const Home = ({ history, allPosts, onDelete, onClick }) => {
           <React.Fragment key={postId}>
             <div
               className="delButtonContainer"
-              onClick={() => {
-                onDelete(postId);
-                onClick();
-              }}
+              onClick={() => onDelete(postId)}
             >
               <button className="delButton">X</button>
             </div>
