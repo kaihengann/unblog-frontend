@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
 
-const NavBar = ({ onLogout, onHome }) => {
+const NavBar = ({ onLogout, onHome,onNewPost }) => {
   return (
     <nav className="navBar">
       <button>
@@ -11,7 +11,7 @@ const NavBar = ({ onLogout, onHome }) => {
         </Link>
       </button>
       <button>
-        <Link onClick={() => {localStorage.setItem("existingPost", false)}}to="/newPost">New Post</Link>
+        <Link onClick={onNewPost}to="/newPost">New Post</Link>
       </button>
       <button id="logoutButton">
         <Link to="/login" onClick={() => onLogout()}>

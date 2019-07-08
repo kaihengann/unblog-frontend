@@ -24,7 +24,7 @@ const Home = ({ history, allPosts, onDelete, onClick }) => {
               id={postId}
               onClick={() => {
                 history.push(`/posts/${postId}`);
-                localStorage.setItem("existingPost", true);
+                onClick(postId);
               }}
             >
               <div>
