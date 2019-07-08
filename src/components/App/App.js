@@ -58,7 +58,7 @@ class App extends React.Component {
 
   onClick = async postId => {
     const allPosts = await getAllPosts();
-    this.setState({ allPosts });
+    this.setState({ allPosts, editMode: false });
     this.getCurrentPost(postId);
     this.updateEditorState();
   };
@@ -222,6 +222,7 @@ class App extends React.Component {
                 editorState={this.state.editorState}
                 handleKeyCommand={this.handleKeyCommand}
                 toggleBlockType={this.toggleBlockType}
+                readOnly={this.editMode}
                 {...props}
               />
             )}

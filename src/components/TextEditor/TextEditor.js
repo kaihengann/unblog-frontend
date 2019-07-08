@@ -18,6 +18,7 @@ const TextEditor = ({
   onSave,
   onClick,
   onChange,
+  readOnly,
   handleKeyCommand,
   toggleBlockType
 }) => {
@@ -62,6 +63,7 @@ const TextEditor = ({
           editorState={editorState}
           handleKeyCommand={handleKeyCommand}
           onChange={onChange}
+          readOnly={!editMode}
         />
       </div>
       <button
