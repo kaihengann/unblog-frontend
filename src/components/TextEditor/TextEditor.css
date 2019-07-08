@@ -4,7 +4,7 @@
   width: 50%;
 }
 
-.editors {
+.editor {
   border: 1px rgb(226, 226, 226) dotted;
   padding: 1em;
   margin: 0px;
@@ -12,7 +12,7 @@
   font-size: 17px;
   letter-spacing: 0.8px;
   line-height: 1.9rem;
-  min-height: 800px;
+  min-height: 250px;
 }
 
 .topButtonsContainer {
@@ -22,7 +22,7 @@
 }
 
 .actionButton {
-  float:right;
+  float: right;
   width: 90px;
   cursor: pointer;
   font-family: Muli;
@@ -30,16 +30,39 @@
 }
 
 .toggled {
-  background-color:#4fb298;
-  color:white;
+  background-color: #4fb298;
+  color: white;
 }
 
-a {
+.editorContainer a {
   text-decoration: none;
   color: black;
 }
 
-h1 {
+.editorContainer h1 {
   line-height: 3rem;
 }
 
+@media only screen and (min-width: 1500px) {
+  .editorContainer {
+    width: 50%;
+  }
+}
+@media only screen and (min-width: 650px) and (max-width: 1500px) {
+  .editorContainer {
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .editorContainer {
+    width: 90%;
+  }
+  .editorContainer h1 {
+    font-size: 40px;
+  }
+
+  .editorContainer h4 {
+    font-size: 12px;
+  }
+}

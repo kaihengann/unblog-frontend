@@ -1,5 +1,10 @@
 .wordCounter {
-  font-family: Muli;
   margin:auto;
   justify-content: center;
+}
+
+.wordCounter span {
+  display:flex;
+  justify-content: center;
+  margin: 5px;
 }

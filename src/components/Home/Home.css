@@ -7,23 +7,23 @@
   cursor: pointer;
 }
 
-h1 {
+.blogPost h1 {
   margin: 5px 0;
 }
 
-h4 {
+.blogPost h4 {
   font-family: Muli;
   margin: 0;
-  color: rgb(145, 145, 145)
+  color: rgb(145, 145, 145);
 }
 
 .delButtonContainer {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-content: center;
   margin: 10px auto auto 0;
   cursor: pointer;
-  width:50%
+  width: 50%;
 }
 .delButton {
   margin: 0;
@@ -32,23 +32,35 @@ h4 {
 }
 
 @media only screen and (min-width: 1500px) {
-  .blogPost{
-    width:40%
+  .blogPost {
+    width: 40%;
   }
   .delButtonContainer {
-    width:70%
+    width: 70%;
+  }
+  .blogPost h1 {
+    font-size: 48px;
+  }
+}
+
+@media only screen and (min-width: 650px) and (max-width: 1500px) {
+  .blogPost {
+    width: 70%;
+  }
+  .blogPost h1 {
+    font-size: 48px;
   }
 }
 
 @media only screen and (max-width: 650px) {
-  .blogPost{
-    width:60%
+  .blogPost {
+    width: 70%;
   }
-  h1 {
-    font-size: 30px
+  .blogPost h1 {
+    font-size: 34px;
   }
 
-  h4 {
-    font-size: 12px
+  .blogPost h4 {
+    font-size: 12px;
   }
 }
