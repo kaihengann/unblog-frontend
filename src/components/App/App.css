@@ -1,6 +1,4 @@
-* {
-  font-family: Muli;
-}
+
 button {
   text-decoration: none;
   border: 1px rgb(226, 226, 226) solid;
@@ -11,7 +9,6 @@ button {
 button:hover {
   background-color: #4fb298;
   color:white;
-  font-size: 1rem;
 }
 
 h1 {

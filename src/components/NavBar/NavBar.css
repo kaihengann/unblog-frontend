@@ -1,10 +1,15 @@
 .navBar {
   margin: 2;
 }
+
 nav button {
   border:none;
   font-size: 1rem;
   margin: 10px;
+}
+
+nav a:hover {
+  color:white;
 }
 
 #logoutButton {
