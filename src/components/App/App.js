@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { EditorState, RichUtils, convertToRaw, convertFromRaw } from "draft-js";
 import "./App.css";
 import {
   getAllPosts,
@@ -8,8 +9,6 @@ import {
   createPost,
   updatePost
 } from "../../utils/api";
-
-import { EditorState, RichUtils, convertToRaw, convertFromRaw } from "draft-js";
 
 import Home from "../Home/Home";
 import Login from "../Login/Login";
@@ -48,9 +47,7 @@ class App extends React.Component {
     if (this.state.currentPost) {
       const postBody = this.state.currentPost.postBody;
       const content = convertFromRaw(JSON.parse(postBody));
-      this.setState({
-        editorState: EditorState.createWithContent(content)
-      });
+      this.setState({ editorState: EditorState.createWithContent(content) });
     } else {
       this.setState({ editorState: EditorState.createEmpty() });
     }
@@ -66,38 +63,20 @@ class App extends React.Component {
   onSave = async () => {
     const username = sessionStorage.getItem("username");
     const contentState = this.state.editorState.getCurrentContent();
-
     if (contentState.getPlainText()) {
       const content = JSON.stringify(convertToRaw(contentState));
       const title = contentState.getFirstBlock().getText();
       const jwt = sessionStorage.getItem("jwt");
-      if (!this.state.currentPost) {
-        await createPost(title, content, jwt, username);
-      }
       if (this.state.currentPost) {
         const postId = this.state.currentPost.postId;
         const createdOn = this.state.currentPost.createdOn;
         await updatePost(postId, title, content, createdOn, jwt, username);
+      } else {
+        await createPost(title, content, jwt, username);
       }
     }
     const allPosts = await getAllPosts();
     this.setState({ allPosts });
-  };
-
-  handleKeyCommand = command => {
-    const newState = RichUtils.handleKeyCommand(
-      this.state.editorState,
-      command
-    );
-    if (newState) {
-      this.onChange(newState);
-      return "handled";
-    }
-    return "not-handled";
-  };
-
-  toggleBlockType = blockType => {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
   };
 
   onEditorButtonClick = e => {
@@ -190,6 +169,22 @@ class App extends React.Component {
     await deletePost(postId, jwt, username);
     const allPosts = await getAllPosts();
     this.setState({ allPosts });
+  };
+
+  handleKeyCommand = command => {
+    const newState = RichUtils.handleKeyCommand(
+      this.state.editorState,
+      command
+    );
+    if (newState) {
+      this.onChange(newState);
+      return "handled";
+    }
+    return "not-handled";
+  };
+
+  toggleBlockType = blockType => {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
   };
 
   render() {
