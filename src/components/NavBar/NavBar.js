@@ -5,19 +5,21 @@ import "./NavBar.css";
 const NavBar = ({ onLogout, onHome,onNewPost }) => {
   return (
     <nav className="navBar">
-      <button>
-        <Link to="/" onClick={() => onHome()}>
+      <Link to="/" onClick={() => onHome()}>
+        <button>
           Home
-        </Link>
-      </button>
-      <button>
-        <Link onClick={onNewPost}to="/newPost">New Post</Link>
-      </button>
-      <button id="logoutButton">
-        <Link to="/login" onClick={() => onLogout()}>
+        </button>
+      </Link>
+      <Link onClick={onNewPost}to="/newPost">
+        <button>
+          New Post
+        </button>
+      </Link>
+      <Link to="/login" onClick={() => onLogout()}>
+        <button id="logoutButton">
           Logout
-        </Link>
-      </button>
+        </button>
+      </Link>
     </nav>
   );
 };
