@@ -12,7 +12,7 @@ const BLOCK_TYPES = [
   { label: "Code Block", style: "code-block" }
 ];
 
-const ToolBar = ({ editorState, editMode, onToggle, onClick }) => {
+const ToolBar = ({ editorState, editMode, onToggle, onBoldClick, onItalicClick, onUnderlineClick }) => {
   const selection = editorState.getSelection();
   const blockType = editorState
     .getCurrentContent()
@@ -21,13 +21,13 @@ const ToolBar = ({ editorState, editMode, onToggle, onClick }) => {
 
   return (
     <div className={editMode ? "toolBar" : "toolBar invisible"}>
-      <button id="boldButton" onMouseDown={onClick}>
+      <button id="boldButton" onMouseDown={onBoldClick}>
         <b>B</b>
       </button>
-      <button id="italicButton" onMouseDown={onClick}>
+      <button id="italicButton" onMouseDown={onItalicClick}>
         <em>I</em>
       </button>
-      <button id="underlineButton" onMouseDown={onClick}>
+      <button id="underlineButton" onMouseDown={onUnderlineClick}>
         U
       </button>
       {BLOCK_TYPES.map(type => (

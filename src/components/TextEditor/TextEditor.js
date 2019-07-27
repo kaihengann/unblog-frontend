@@ -19,7 +19,11 @@ const TextEditor = ({
   onClick,
   onChange,
   handleKeyCommand,
-  toggleBlockType
+  toggleBlockType,
+  onBoldClick,
+  onItalicClick,
+  onUnderlineClick,
+
 }) => {
   return (
     <div className="editorContainer">
@@ -51,8 +55,10 @@ const TextEditor = ({
         <Toolbar
           editorState={editorState}
           onToggle={toggleBlockType}
-          onClick={onClick}
           editMode={editMode}
+          onBoldClick={onBoldClick}
+          onItalicClick={onItalicClick}
+          onUnderlineClick={onUnderlineClick}
         />
       </span>
       <div className="editor">

@@ -79,28 +79,30 @@ class App extends React.Component {
     this.setState({ allPosts });
   };
 
-  onEditorButtonClick = e => {
-    e.preventDefault();
-    if (e.target.id === "underlineButton") {
-      this.onChange(
-        RichUtils.toggleInlineStyle(this.state.editorState, "UNDERLINE")
-      );
-    }
-    if (e.target.id === "boldButton") {
-      this.onChange(
-        RichUtils.toggleInlineStyle(this.state.editorState, "BOLD")
-      );
-    }
-    if (e.target.id === "italicButton") {
-      this.onChange(
-        RichUtils.toggleInlineStyle(this.state.editorState, "ITALIC")
-      );
-    }
-    if (e.target.id === "editButton") {
-      this.setState({
-        editMode: !this.state.editMode
-      });
-    }
+  onEditClick = event => {
+    event.preventDefault();
+    this.setState({ editMode: !this.state.editMode });
+  };
+
+  onBoldClick = event => {
+    event.preventDefault();
+    this.onEditorChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, "BOLD")
+    );
+  };
+
+  onUnderlineClick = event => {
+    event.preventDefault();
+    this.onEditorChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, "UNDERLINE")
+    );
+  };
+
+  onItalicClick = event => {
+    event.preventDefault();
+    this.onEditorChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, "ITALIC")
+    );
   };
 
   onNewPost = () => {
@@ -163,14 +165,16 @@ class App extends React.Component {
       command
     );
     if (newState) {
-      this.onChange(newState);
+      this.onEditorChange(newState);
       return "handled";
     }
     return "not-handled";
   };
 
   toggleBlockType = blockType => {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
+    this.onEditorChange(
+      RichUtils.toggleBlockType(this.state.editorState, blockType)
+    );
   };
 
   render() {
@@ -196,11 +200,14 @@ class App extends React.Component {
                 allPosts={this.state.allPosts}
                 editMode={this.state.editMode}
                 onChange={this.onEditorChange}
-                onClick={this.onEditorButtonClick}
+                onClick={this.onEditClick}
                 onSave={this.onSave}
                 editorState={this.state.editorState}
                 handleKeyCommand={this.handleKeyCommand}
                 toggleBlockType={this.toggleBlockType}
+                onBoldClick={this.onBoldClick}
+                onItalicClick={this.onItalicClick}
+                onUnderlineClick={this.onUnderlineClick}
                 readOnly={this.editMode}
                 {...props}
               />
@@ -227,18 +234,22 @@ class App extends React.Component {
                 allPosts={this.state.allPosts}
                 editMode={this.state.editMode}
                 onChange={this.onEditorChange}
-                onClick={this.onEditorButtonClick}
+                onClick={this.onEditClick}
                 onSave={this.onSave}
                 editorState={this.state.editorState}
                 handleKeyCommand={this.handleKeyCommand}
+                handleTab={this.handleTab}
                 toggleBlockType={this.toggleBlockType}
+                onBoldClick={this.onBoldClick}
+                onItalicClick={this.onItalicClick}
+                onUnderlineClick={this.onUnderlineClick}
                 {...props}
               />
             )}
           />
           <Route
             path="/login"
-            render={props => (
+            render={() => (
               <Login
                 onChange={this.onChange}
                 onSubmit={this.onSubmit}
