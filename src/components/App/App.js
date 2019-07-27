@@ -78,6 +78,14 @@ class App extends React.Component {
     this.setState({ allPosts });
   };
 
+  onNewPost = () => {
+    this.setState({
+      editMode: true,
+      currentPost: null,
+      editorState: EditorState.createEmpty()
+    });
+  };
+
   onEditClick = event => {
     event.preventDefault();
     this.setState({ editMode: !this.state.editMode });
@@ -102,14 +110,6 @@ class App extends React.Component {
     this.onEditorChange(
       RichUtils.toggleInlineStyle(this.state.editorState, "ITALIC")
     );
-  };
-
-  onNewPost = () => {
-    this.setState({
-      editMode: true,
-      currentPost: null,
-      editorState: EditorState.createEmpty()
-    });
   };
 
   onChange = event => this.setState({ [event.target.id]: event.target.value });
@@ -179,6 +179,21 @@ class App extends React.Component {
       RichUtils.toggleBlockType(this.state.editorState, blockType)
     );
   };
+
+  onDemo = async () => {
+    const data = await userLogin("user2", "password2")
+    if (data.jwt) {
+      sessionStorage.setItem("jwt", data.jwt);
+      sessionStorage.setItem("username", data.username);
+      this.setState({
+        isSignedIn: true,
+        currentUser: data.username
+      });
+      const allPosts = await getAllPosts();
+      this.setState({ allPosts })
+    }
+  }
+  
 
   render() {
     const isSignedIn = sessionStorage.getItem("jwt");
@@ -259,6 +274,7 @@ class App extends React.Component {
                 onChange={this.onChange}
                 onSubmit={this.onSubmit}
                 isSignedIn={this.state.isSignedIn}
+                onDemo={this.onDemo}
               />
             )}
           />

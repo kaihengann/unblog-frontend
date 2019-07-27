@@ -2,7 +2,7 @@ import React from "react";
 import "./Login.css";
 import { Redirect } from "react-router-dom";
 
-const Login = ({ onChange, onSubmit, isSignedIn }) => {
+const Login = ({ onChange, onSubmit, isSignedIn, onDemo }) => {
   if (isSignedIn) return <Redirect to="/" />
 
   return (
@@ -27,6 +27,9 @@ const Login = ({ onChange, onSubmit, isSignedIn }) => {
               Sign In
             </button>
           </div>
+          <button id="demoButton" onClick={onDemo}>
+            Have a quick look &gt;
+          </button>
     </div>
   );
 };

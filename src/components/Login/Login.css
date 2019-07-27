@@ -1,26 +1,26 @@
 .loginFormContainer {
-  height:500px;
+  position: relative;
+  display: flex;
+  height: 500px;
   width: 300px;
-  margin:auto;
-  display:flex;
+  margin: auto;
   align-content: center;
   justify-content: center;
   border: 1px solid whitesmoke;
-  box-shadow: 2px 5px 6px -3px rgba(111, 111, 111, 0.8);
+  box-shadow: 2px 5px 6px -3px rgba(111, 111, 111, 0.25);
 }
 
 .loginForm {
   width: 200px;
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   background-color: white;
 }
 
 .loginInput {
-  margin: 5px 0px ;
+  margin: 5px 0px;
   padding: 0 5px;
-  /* width: 100px; */
   border-style: none;
   border: 0;
   outline: none;
@@ -36,7 +36,7 @@
 }
 
 .loginInput:hover {
-  border-bottom:2px solid #4fb298;
+  border-bottom: 2px solid #4fb298;
 }
 
 button {
@@ -44,12 +44,20 @@ button {
   padding: 8px;
 }
 
-
-
 button:focus {
   outline: none;
 }
 
 h1 {
   margin-bottom: 30px;
+}
+
+#demoButton {
+  position: absolute;
+  text-decoration: none;
+  border: none;
+  /* height:20px;
+  width:50px; */
+  bottom: 5px;
+  right: 10px;
 }
