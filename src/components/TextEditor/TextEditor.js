@@ -21,7 +21,6 @@ const TextEditor = ({
   handleKeyCommand,
   toggleBlockType
 }) => {
-  // match ? (editMode = false) : (editMode = true);
   return (
     <div className="editorContainer">
       <div className="topButtonsContainer">
