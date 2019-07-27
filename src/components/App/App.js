@@ -54,10 +54,9 @@ class App extends React.Component {
   };
 
   onPostClick = async postId => {
-    const allPosts = await getAllPosts();
-    this.setState({ allPosts, editMode: false });
-    this.getCurrentPost(postId);
+    await this.getCurrentPost(postId);
     this.updateEditorState();
+    this.setState({ editMode: false });
   };
 
   onSave = async () => {
