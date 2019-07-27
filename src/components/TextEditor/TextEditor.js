@@ -23,21 +23,23 @@ const TextEditor = ({
   onBoldClick,
   onItalicClick,
   onUnderlineClick,
-
+  clearEditorState
 }) => {
   return (
     <div className="editorContainer">
       <div className="topButtonsContainer">
         <Link to="/">
-          <button className="actionButton" id="backButton">
+          <button
+            className="actionButton"
+            id="backButton"
+            onClick={clearEditorState}
+          >
             Back
           </button>
         </Link>
 
         <button
-          className={
-            editMode ? "actionButton toggled" : "actionButton"
-          }
+          className={editMode ? "actionButton toggled" : "actionButton"}
           id="editButton"
           onClick={onClick}
         >
@@ -46,10 +48,7 @@ const TextEditor = ({
       </div>
 
       <div>
-        <WordCounter
-          editorState={editorState}
-          editMode={editMode}
-        />
+        <WordCounter editorState={editorState} editMode={editMode} />
       </div>
       <span>
         <Toolbar
@@ -71,9 +70,7 @@ const TextEditor = ({
         />
       </div>
       <button
-        className={
-          editMode ? "actionButton" : "actionButton invisible"
-        }
+        className={editMode ? "actionButton" : "actionButton invisible"}
         onClick={onSave}
       >
         <Link to="/">Save and exit</Link>

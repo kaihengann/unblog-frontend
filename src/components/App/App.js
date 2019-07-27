@@ -171,6 +171,10 @@ class App extends React.Component {
     return "not-handled";
   };
 
+  clearEditorState = () => {
+    this.setState({ editorState: EditorState.createEmpty() });
+  };
+
   toggleBlockType = blockType => {
     this.onEditorChange(
       RichUtils.toggleBlockType(this.state.editorState, blockType)
@@ -208,6 +212,7 @@ class App extends React.Component {
                 onBoldClick={this.onBoldClick}
                 onItalicClick={this.onItalicClick}
                 onUnderlineClick={this.onUnderlineClick}
+                clearEditorState={this.clearEditorState}
                 readOnly={this.editMode}
                 {...props}
               />
@@ -243,6 +248,7 @@ class App extends React.Component {
                 onBoldClick={this.onBoldClick}
                 onItalicClick={this.onItalicClick}
                 onUnderlineClick={this.onUnderlineClick}
+                clearEditorState={this.clearEditorState}
                 {...props}
               />
             )}
