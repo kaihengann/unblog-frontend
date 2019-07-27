@@ -24,8 +24,8 @@ class App extends React.Component {
       allPosts: null,
       editMode: false,
       currentPost: null,
-      inputFormUsername: null,
-      inputFormPassword: null,
+      usernameInput: null,
+      passwordInput: null,
       editorState: EditorState.createEmpty()
     };
   }
@@ -111,31 +111,15 @@ class App extends React.Component {
     });
   };
 
-  onChange = e => {
-    if (e.target.id === "usernameInput") {
-      this.setState({
-        inputFormUsername: e.target.value
-      });
-    }
-    if (e.target.id === "passwordInput") {
-      this.setState({
-        inputFormPassword: e.target.value
-      });
-    }
-  };
+  onChange = event => this.setState({ [event.target.id]: event.target.value });
 
-  onEditorChange = editorState => {
-    this.setState({
-      editorState
-    });
-  };
+  onEditorChange = editorState => this.setState({ editorState });
 
   onSubmit = async e => {
-    e.preventDefault();
     if (e.target.id === "loginFormSubmitButton") {
       const data = await userLogin(
-        this.state.inputFormUsername,
-        this.state.inputFormPassword
+        this.state.usernameInput,
+        this.state.passwordInput
       );
       if (data.jwt) {
         sessionStorage.setItem("jwt", data.jwt);
@@ -146,7 +130,9 @@ class App extends React.Component {
         });
         const allPosts = await getAllPosts();
         this.setState({
-          allPosts
+          allPosts,
+          usernameInput: null,
+          passwordInput: null
         });
       }
     }
